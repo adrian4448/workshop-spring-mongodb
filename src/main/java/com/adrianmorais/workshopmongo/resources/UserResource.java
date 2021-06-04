@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,7 +17,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.adrianmorais.workshopmongo.domain.User;
 import com.adrianmorais.workshopmongo.dto.UserDTO;
 import com.adrianmorais.workshopmongo.services.UserService;
-import com.adrianmorais.workshopmongo.services.exception.ObjectNotFoundException;
 
 @RestController
 @RequestMapping(value = "/users")
@@ -45,6 +45,12 @@ public class UserResource {
 		service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
+	}
+	
+	@RequestMapping(value="/{id}", method= RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable String id) {
+		service.delete(id);
+		return ResponseEntity.noContent().build();
 	}
 	
 }
